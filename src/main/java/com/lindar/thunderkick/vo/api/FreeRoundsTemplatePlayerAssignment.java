@@ -1,5 +1,6 @@
 package com.lindar.thunderkick.vo.api;
 
+import com.lindar.thunderkick.vo.api.util.Amount;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -21,9 +22,12 @@ public class FreeRoundsTemplatePlayerAssignment extends ErrorResponse {
     private Integer remainingNumberOfFreeRounds;
     private Boolean isValid;
 
+    private Amount totalWin;
+
     public FreeRoundsTemplatePlayerAssignment(Date validFrom, Date validTo, String freeRoundsBonusTemplateReference) {
         this.validFrom = validFrom;
         this.validTo = validTo;
         this.freeRoundsBonusTemplateReference = freeRoundsBonusTemplateReference;
     }
+
 }
