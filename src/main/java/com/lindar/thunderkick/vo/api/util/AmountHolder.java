@@ -10,7 +10,7 @@ import java.math.BigDecimal;
  */
 @Data
 @NoArgsConstructor
-public class Amount {
+public class AmountHolder {
     private BigDecimal amount;
     private String currency;
 }
