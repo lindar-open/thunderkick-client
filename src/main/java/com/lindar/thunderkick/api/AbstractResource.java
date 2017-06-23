@@ -58,10 +58,10 @@ public abstract class AbstractResource {
         WellRestedRequest request = buildRequestFromResourcePath(resourcePath);
         ResponseVO response = request.get();
         if (response.isValid()) {
-            return ResultFactory.getSuccessResult(response.castJsonResponse(clazz));
+            return ResultFactory.successful(response.castJsonResponse(clazz));
         }
         ErrorResponse errorResponse = response.castJsonResponse(ErrorResponse.class);
-        return ResultFactory.getFailResult(errorResponse.getErrorMessage(), errorResponse.getErrorCode());
+        return ResultFactory.failed(errorResponse.getErrorMessage(), errorResponse.getErrorCode());
     }
 
     protected Result<Void> post(String resourcePath) {
@@ -79,13 +79,13 @@ public abstract class AbstractResource {
             }
 
             if (response.getStatusCode() < 300) {
-                return ResultFactory.getSuccessResultMsg(response.getServerResponse());
+                return ResultFactory.successfulMsg(response.getServerResponse());
             }
             ErrorResponse errorResponse = response.castJsonResponse(ErrorResponse.class);
-            return ResultFactory.getFailResult(errorResponse.getErrorMessage(), errorResponse.getErrorCode());
+            return ResultFactory.failed(errorResponse.getErrorMessage(), errorResponse.getErrorCode());
         } catch (Exception ex) {
             log.error("Error occurred: ", ex);
-            return ResultFactory.getFailResult("Error occurred: " + ex.getMessage());
+            return ResultFactory.failed("Error occurred: " + ex.getMessage());
         }
     }
 
@@ -93,10 +93,10 @@ public abstract class AbstractResource {
         WellRestedRequest request = buildRequestFromResourcePath(resourcePath);
         ResponseVO response = request.post(objectToPost);
         if (response.isValid()) {
-            return ResultFactory.getSuccessResult(response.castJsonResponse(responseClass));
+            return ResultFactory.successful(response.castJsonResponse(responseClass));
         }
         ErrorResponse errorResponse = response.castJsonResponse(ErrorResponse.class);
-        return ResultFactory.getFailResult(errorResponse.getErrorMessage(), errorResponse.getErrorCode());
+        return ResultFactory.failed(errorResponse.getErrorMessage(), errorResponse.getErrorCode());
     }
 
     protected Result<Void> put(String resourcePath) {
@@ -114,13 +114,13 @@ public abstract class AbstractResource {
             }
 
             if (response.getStatusCode() < 300) {
-                return ResultFactory.getSuccessResultMsg(response.getServerResponse());
+                return ResultFactory.successfulMsg(response.getServerResponse());
             }
             ErrorResponse errorResponse = response.castJsonResponse(ErrorResponse.class);
-            return ResultFactory.getFailResult(errorResponse.getErrorMessage(), errorResponse.getErrorCode());
+            return ResultFactory.failed(errorResponse.getErrorMessage(), errorResponse.getErrorCode());
         } catch (Exception ex) {
             log.error("Error occurred: ", ex);
-            return ResultFactory.getFailResult("Error occurred: " + ex.getMessage());
+            return ResultFactory.failed("Error occurred: " + ex.getMessage());
         }
     }
 
@@ -128,10 +128,10 @@ public abstract class AbstractResource {
         WellRestedRequest request = buildRequestFromResourcePath(resourcePath);
         ResponseVO response = request.put(objectToPost);
         if (response.isValid()) {
-            return ResultFactory.getSuccessResult(response.castJsonResponse(responseClass));
+            return ResultFactory.successful(response.castJsonResponse(responseClass));
         }
         ErrorResponse errorResponse = response.castJsonResponse(ErrorResponse.class);
-        return ResultFactory.getFailResult(errorResponse.getErrorMessage(), errorResponse.getErrorCode());
+        return ResultFactory.failed(errorResponse.getErrorMessage(), errorResponse.getErrorCode());
     }
 
     protected Result<Void> delete(String resourcePath) {
@@ -141,13 +141,13 @@ public abstract class AbstractResource {
             response = request.delete();
 
             if (response.getStatusCode() < 300) {
-                return ResultFactory.getSuccessResultMsg(response.getServerResponse());
+                return ResultFactory.successfulMsg(response.getServerResponse());
             }
             ErrorResponse errorResponse = response.castJsonResponse(ErrorResponse.class);
-            return ResultFactory.getFailResult(errorResponse.getErrorMessage(), errorResponse.getErrorCode());
+            return ResultFactory.failed(errorResponse.getErrorMessage(), errorResponse.getErrorCode());
         } catch (Exception ex) {
             log.error("Error occurred: ", ex);
-            return ResultFactory.getFailResult("Error occurred: " + ex.getMessage());
+            return ResultFactory.failed("Error occurred: " + ex.getMessage());
         }
     }
 
