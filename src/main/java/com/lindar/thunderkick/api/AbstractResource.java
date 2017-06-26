@@ -12,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.text.StrSubstitutor;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -33,7 +34,8 @@ public abstract class AbstractResource {
     protected WellRestedRequest buildRequestFromResourcePath(String resourcePath) {
         String url = validatePath(accessCredentials.getApiUrl() + resourcePath);
         return WellRestedRequest.build(url, accessCredentials.getUsername(), accessCredentials.getPassword())
-                .setDateSerializer(new StringDateSerializer(ISO_DATE_FORMAT));
+                .setDateSerializer(new StringDateSerializer(ISO_DATE_FORMAT))
+                .excludeFields(Collections.singletonList("ref"));
     }
 
     protected String validatePath(String path) {
