@@ -25,12 +25,12 @@ public class AccountResource extends AbstractResource {
     }
 
     public Result<Void> keepAlive(String playerSessionToken) {
-        String path = Endpoints.ACCOUNT.ROOT + Endpoints.ACCOUNT.LOGIN;
+        String path = Endpoints.ACCOUNT.ROOT + Endpoints.ACCOUNT.KEEP_ALIVE;
         return put(buildPathWithSessionToken(path, playerSessionToken));
     }
 
     public Result<Void> logout(String playerSessionToken) {
-        String path = Endpoints.ACCOUNT.ROOT + Endpoints.ACCOUNT.LOGIN;
+        String path = Endpoints.ACCOUNT.ROOT + Endpoints.ACCOUNT.LOGOUT;
         return delete(buildPathWithSessionToken(path, playerSessionToken));
     }
 }
