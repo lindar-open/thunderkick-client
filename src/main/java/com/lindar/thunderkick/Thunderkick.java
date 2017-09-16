@@ -12,7 +12,6 @@ import java.util.Date;
 
 /**
  * Thunderkick Casino API Client Facade
- *
  */
 @Slf4j
 public class Thunderkick {
@@ -31,9 +30,8 @@ public class Thunderkick {
 
     /**
      * Builds Thunderkick Casino API Client
-     *
      */
-    public final static Thunderkick build(String apiUrl, String operatorId, String username, String password) {
+    public static Thunderkick build(String apiUrl, String operatorId, String username, String password) {
         AccessCredentials accessCredentials = new AccessCredentials();
         accessCredentials.setApiUrl(apiUrl);
         accessCredentials.setOperatorId(operatorId);
@@ -44,15 +42,13 @@ public class Thunderkick {
 
     /**
      * Builds Thunderkick Casino API Client
-     *
      */
-    public final static Thunderkick build(AccessCredentials accessCredentials) {
+    public static Thunderkick build(AccessCredentials accessCredentials) {
         return new Thunderkick(accessCredentials);
     }
 
     /**
      * Returns an account resource that allows you to interact with all account endpoints: register, login, logout, keepAlive
-     *
      */
     public AccountResource account() {
         return accountResource;
@@ -60,7 +56,6 @@ public class Thunderkick {
 
     /**
      * Returns a free rounds template resource that allows you to manage free rounds templates
-     *
      */
     public FreeRoundsTemplateResource freeRoundsTemplate() {
         return freeRoundsTemplateResource;
@@ -68,13 +63,10 @@ public class Thunderkick {
 
     /**
      * Returns a free rounds resource that allows you to manage player assignments
-     *
      */
     public FreeRoundsResource freeRounds() {
         return freeRoundsResource;
     }
-
-
 
     private static Date fromLocalDate(LocalDateTime localDateTime) {
         return Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());

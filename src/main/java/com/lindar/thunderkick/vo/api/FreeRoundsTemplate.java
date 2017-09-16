@@ -13,7 +13,6 @@ public class FreeRoundsTemplate extends FreeRoundsTemplateBase {
 
     private Integer numberOfFreeRounds;
 
-
     private Date creationDate;
 
     private Boolean isValid;
@@ -23,5 +22,7 @@ public class FreeRoundsTemplate extends FreeRoundsTemplateBase {
     private String templateReference;
 
     private Integer operatorId;
+
+    private Boolean usedForReferAFriend;
 
 }

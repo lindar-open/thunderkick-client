@@ -32,6 +32,9 @@ public abstract class AbstractResource {
     }
 
     protected WellRestedRequest buildRequestFromResourcePath(String resourcePath) {
+        String url = UrlAcolyte.safeConcat(accessCredentials.getApiUrl(), resourcePath);
+        return WellRestedRequest.builder().url(url).credentials(accessCredentials.getUsername(), accessCredentials.getPassword()).build();
+
         String url = validatePath(accessCredentials.getApiUrl() + resourcePath);
         return WellRestedRequest.build(url, accessCredentials.getUsername(), accessCredentials.getPassword())
                 .setDateSerializer(new StringDateSerializer(ISO_DATE_FORMAT))
