@@ -7,6 +7,7 @@ import com.lindar.thunderkick.vo.api.FreeRoundsTemplatePlayerAssignment;
 import com.lindar.thunderkick.vo.api.FreeRoundsTemplatePlayerAssignments;
 import com.lindar.thunderkick.vo.internal.AccessCredentials;
 import com.lindar.wellrested.vo.Result;
+import lindar.acolyte.util.UrlAcolyte;
 import org.apache.commons.lang3.BooleanUtils;
 
 public class FreeRoundsResource extends AbstractResource {
@@ -25,24 +26,24 @@ public class FreeRoundsResource extends AbstractResource {
 
     public Result<FreeRoundsTemplateFailedPlayerAssignments> assignMultiple(FreeRoundsTemplateMultiPlayerAssignment templatePlayerAssignment, String templateRef) {
         String path = Endpoints.FREE_ROUNDS.ASSIGNMENT_MULTIPLE;
-        return postAndGet(buildPathWithTemplateRef(path, templateRef), templatePlayerAssignment, FreeRoundsTemplateFailedPlayerAssignments.class);
+        return postAndGet(UrlAcolyte.safeConcat(path, templateRef), templatePlayerAssignment, FreeRoundsTemplateFailedPlayerAssignments.class);
     }
 
     public Result<FreeRoundsTemplatePlayerAssignments> getPlayerAssignmentsByUsername(String username, boolean onlyActive) {
         String path = Endpoints.FREE_ROUNDS.ASSIGNMENT_BY_USERNAME;
-        return sendAndGet(addAttrAndValueToPath(buildPathWithUser(path, username), ONLY_ACTIVE_PARAM, BooleanUtils.toStringTrueFalse(onlyActive)),
+        return sendAndGet(UrlAcolyte.addParam(UrlAcolyte.safeConcat(path, username), ONLY_ACTIVE_PARAM, BooleanUtils.toStringTrueFalse(onlyActive)),
                 FreeRoundsTemplatePlayerAssignments.class);
     }
 
     public Result<FreeRoundsTemplatePlayerAssignments> getPlayerAssignmentsByPlayerRef(String playerRef, boolean onlyActive) {
         String path = Endpoints.FREE_ROUNDS.ASSIGNMENT_BY_REF;
-        return sendAndGet(addAttrAndValueToPath(buildPathWithUser(path, playerRef), ONLY_ACTIVE_PARAM, BooleanUtils.toStringTrueFalse(onlyActive)),
+        return sendAndGet(UrlAcolyte.addParam(UrlAcolyte.safeConcat(path, playerRef), ONLY_ACTIVE_PARAM, BooleanUtils.toStringTrueFalse(onlyActive)),
                 FreeRoundsTemplatePlayerAssignments.class);
     }
 
     public Result<Void> assignByPlayerUsername(String username, String playerFreeRoundsRef, FreeRoundsTemplatePlayerAssignment templatePlayerAssignment) {
         String path = Endpoints.FREE_ROUNDS.ASSIGNMENT_BY_USERNAME_AND_ROUNDS_REF;
-        return post(buildPathWithUserAndPlayerFreeRoundsRef(path, username, playerFreeRoundsRef), templatePlayerAssignment);
+        return post(UrlAcolyte.safeConcat(path, username, playerFreeRoundsRef), templatePlayerAssignment);
     }
 
     public Result<Void> assignByPlayerRef(String playerRef, String playerFreeRoundsRef, FreeRoundsTemplatePlayerAssignment templatePlayerAssignment) {

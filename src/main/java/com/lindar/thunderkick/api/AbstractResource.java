@@ -4,17 +4,14 @@ import com.lindar.thunderkick.vo.api.ErrorResponse;
 import com.lindar.thunderkick.vo.internal.AccessCredentials;
 import com.lindar.wellrested.WellRestedRequest;
 import com.lindar.wellrested.util.StringDateSerializer;
-import com.lindar.wellrested.vo.WellRestedResponse;
 import com.lindar.wellrested.vo.Result;
-import com.lindar.wellrested.vo.ResultFactory;
+import com.lindar.wellrested.vo.ResultBuilder;
+import com.lindar.wellrested.vo.WellRestedResponse;
+import lindar.acolyte.util.UrlAcolyte;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.text.StrSubstitutor;
 
 import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
 
 @Slf4j
 public abstract class AbstractResource {
@@ -27,180 +24,112 @@ public abstract class AbstractResource {
     @Getter
     private final AccessCredentials accessCredentials;
 
-    public AbstractResource(AccessCredentials accessCredentials) {
+    AbstractResource(AccessCredentials accessCredentials) {
         this.accessCredentials = accessCredentials;
     }
 
-    protected WellRestedRequest buildRequestFromResourcePath(String resourcePath) {
+    private WellRestedRequest buildRequestFromResourcePath(String resourcePath) {
         String url = UrlAcolyte.safeConcat(accessCredentials.getApiUrl(), resourcePath);
-        return WellRestedRequest.builder().url(url).credentials(accessCredentials.getUsername(), accessCredentials.getPassword()).build();
-
-        String url = validatePath(accessCredentials.getApiUrl() + resourcePath);
-        return WellRestedRequest.build(url, accessCredentials.getUsername(), accessCredentials.getPassword())
-                .setDateSerializer(new StringDateSerializer(ISO_DATE_FORMAT))
-                .excludeFields(Collections.singletonList("ref"));
+        return WellRestedRequest.builder().url(url).credentials(accessCredentials.getUsername(), accessCredentials.getPassword())
+                .dateSerializer(new StringDateSerializer(ISO_DATE_FORMAT))
+                .excludeFields(Collections.singletonList("ref"))
+                .build();
     }
 
-    protected String validatePath(String path) {
-        String newPath = path.replaceAll("//", "/");
-        return newPath.replaceFirst("/", "//");
-    }
-
-    private String validatePathWithAttributes(String path) {
-        String newPath = validatePath(path);
-        if (newPath.endsWith("/")) {
-            newPath = newPath.substring(0, newPath.length() - 1);
-            newPath += QUESTION;
-        } else if (newPath.contains(QUESTION)) {
-            newPath += AND;
-        } else {
-            newPath += QUESTION;
-        }
-        return newPath.replaceAll(AND + AND, AND);
-    }
-
-    protected <T extends ErrorResponse> Result<T> sendAndGet(String resourcePath, Class<T> clazz) {
+    <T extends ErrorResponse> Result<T> sendAndGet(String resourcePath, Class<T> clazz) {
         WellRestedRequest request = buildRequestFromResourcePath(resourcePath);
-        WellRestedResponse response = request.get();
+        WellRestedResponse response = request.get().submit();
         if (response.isValid()) {
-            return ResultFactory.successful(response.fromJson().castTo(clazz));
+            return ResultBuilder.successful(response.fromJson().castTo(clazz));
         }
         ErrorResponse errorResponse = response.fromJson().castTo(ErrorResponse.class);
-        return ResultFactory.failed(errorResponse.getErrorMessage(), errorResponse.getErrorCode());
+        return ResultBuilder.failed().msg(errorResponse.getErrorMessage()).code(errorResponse.getErrorCode()).buildAndIgnoreData();
     }
 
     protected Result<Void> post(String resourcePath) {
         return post(resourcePath, null);
     }
 
-    protected <T> Result<Void> post(String resourcePath, T objectToPost) {
+    <T> Result<Void> post(String resourcePath, T objectToPost) {
         try {
             WellRestedRequest request = buildRequestFromResourcePath(resourcePath);
             WellRestedResponse response;
             if (objectToPost != null) {
-                response = request.post(objectToPost);
+                response = request.post().jsonContent(objectToPost).submit();
             } else {
-                response = request.post();
+                response = request.post().submit();
             }
 
             if (response.getStatusCode() < 300) {
-                return ResultFactory.successfulMsg(response.getServerResponse());
+                return ResultBuilder.successfulWithoutData(response.getServerResponse());
             }
             ErrorResponse errorResponse = response.fromJson().castTo(ErrorResponse.class);
-            return ResultFactory.failed(errorResponse.getErrorMessage(), errorResponse.getErrorCode());
+            return ResultBuilder.failed().msg(errorResponse.getErrorMessage()).code(errorResponse.getErrorCode()).buildAndIgnoreData();
         } catch (Exception ex) {
             log.error("Error occurred: ", ex);
-            return ResultFactory.failed("Error occurred: " + ex.getMessage());
+            return ResultBuilder.failed("Error occurred: " + ex.getMessage());
         }
     }
 
-    protected <U, T extends ErrorResponse> Result<T> postAndGet(String resourcePath, U objectToPost, Class<T> responseClass) {
+    <U, T extends ErrorResponse> Result<T> postAndGet(String resourcePath, U objectToPost, Class<T> responseClass) {
         WellRestedRequest request = buildRequestFromResourcePath(resourcePath);
-        WellRestedResponse response = request.post(objectToPost);
+        WellRestedResponse response = request.post().jsonContent(objectToPost).submit();
         if (response.isValid()) {
-            return ResultFactory.successful(response.fromJson().castTo(responseClass));
+            return ResultBuilder.successful(response.fromJson().castTo(responseClass));
         }
         ErrorResponse errorResponse = response.fromJson().castTo(ErrorResponse.class);
-        return ResultFactory.failed(errorResponse.getErrorMessage(), errorResponse.getErrorCode());
+        return ResultBuilder.failed().msg(errorResponse.getErrorMessage()).code(errorResponse.getErrorCode()).buildAndIgnoreData();
     }
 
-    protected Result<Void> put(String resourcePath) {
+    Result<Void> put(String resourcePath) {
         return put(resourcePath, null);
     }
 
-    protected <T> Result<Void> put(String resourcePath, T objectToPut) {
+    <T> Result<Void> put(String resourcePath, T objectToPut) {
         try {
             WellRestedRequest request = buildRequestFromResourcePath(resourcePath);
             WellRestedResponse response;
             if (objectToPut != null) {
-                response = request.put(objectToPut);
+                response = request.put().jsonContent(objectToPut).submit();
             } else {
-                response = request.put();
+                response = request.put().submit();
             }
 
             if (response.getStatusCode() < 300) {
-                return ResultFactory.successfulMsg(response.getServerResponse());
+                return ResultBuilder.successfulWithoutData(response.getServerResponse());
             }
             ErrorResponse errorResponse = response.fromJson().castTo(ErrorResponse.class);
-            return ResultFactory.failed(errorResponse.getErrorMessage(), errorResponse.getErrorCode());
+            return ResultBuilder.failed().msg(errorResponse.getErrorMessage()).code(errorResponse.getErrorCode()).buildAndIgnoreData();
         } catch (Exception ex) {
             log.error("Error occurred: ", ex);
-            return ResultFactory.failed("Error occurred: " + ex.getMessage());
+            return ResultBuilder.failed("Error occurred: " + ex.getMessage());
         }
     }
 
     protected <U, T extends ErrorResponse> Result<T> putAndGet(String resourcePath, U objectToPost, Class<T> responseClass) {
         WellRestedRequest request = buildRequestFromResourcePath(resourcePath);
-        WellRestedResponse response = request.put(objectToPost);
+        WellRestedResponse response = request.put().jsonContent(objectToPost).submit();
         if (response.isValid()) {
-            return ResultFactory.successful(response.fromJson().castTo(responseClass));
+            return ResultBuilder.successful(response.fromJson().castTo(responseClass));
         }
         ErrorResponse errorResponse = response.fromJson().castTo(ErrorResponse.class);
-        return ResultFactory.failed(errorResponse.getErrorMessage(), errorResponse.getErrorCode());
+        return ResultBuilder.failed().msg(errorResponse.getErrorMessage()).code(errorResponse.getErrorCode()).buildAndIgnoreData();
     }
 
-    protected Result<Void> delete(String resourcePath) {
+    Result<Void> delete(String resourcePath) {
         try {
             WellRestedRequest request = buildRequestFromResourcePath(resourcePath);
             WellRestedResponse response;
-            response = request.delete();
+            response = request.delete().submit();
 
             if (response.getStatusCode() < 300) {
-                return ResultFactory.successfulMsg(response.getServerResponse());
+                return ResultBuilder.successfulWithoutData(response.getServerResponse());
             }
             ErrorResponse errorResponse = response.fromJson().castTo(ErrorResponse.class);
-            return ResultFactory.failed(errorResponse.getErrorMessage(), errorResponse.getErrorCode());
+            return ResultBuilder.failed().msg(errorResponse.getErrorMessage()).code(errorResponse.getErrorCode()).buildAndIgnoreData();
         } catch (Exception ex) {
             log.error("Error occurred: ", ex);
-            return ResultFactory.failed("Error occurred: " + ex.getMessage());
+            return ResultBuilder.failed("Error occurred: " + ex.getMessage());
         }
     }
-
-    protected String buildPath(String path) {
-        return buildPath(path, null, null);
-    }
-
-    protected String buildPathWithSessionToken(String path, String playerSessionToken) {
-        return buildPath(path, playerSessionToken, null);
-    }
-
-    protected String buildPathWithTemplateRef(String path, String templateReference) {
-        return buildPath(path, null, templateReference);
-    }
-
-    protected String buildPathWithUser(String path, String user) {
-        Map<String, String> values = new HashMap<>(2);
-        values.put("operatorId", this.accessCredentials.getOperatorId());
-        values.put("user", user);
-        StrSubstitutor substitutor = new StrSubstitutor(values);
-        return substitutor.replace(path);
-    }
-
-    protected String buildPathWithUserAndPlayerFreeRoundsRef(String path, String user, String playerFreeRoundsRef) {
-        Map<String, String> values = new HashMap<>(3);
-        values.put("operatorId", this.accessCredentials.getOperatorId());
-        values.put("user", user);
-        values.put("playerFreeRoundsReference", playerFreeRoundsRef);
-        StrSubstitutor substitutor = new StrSubstitutor(values);
-        return substitutor.replace(path);
-    }
-
-    private String buildPath(String path, String playerSessionToken, String templateReference) {
-        Map<String, String> values = new HashMap<>(3);
-        values.put("operatorId", this.accessCredentials.getOperatorId());
-        if (StringUtils.isNotBlank(playerSessionToken)) {
-            values.put("playerSessionToken", playerSessionToken);
-        }
-        if (StringUtils.isNotBlank(templateReference)) {
-            values.put("templateReference", templateReference);
-        }
-        StrSubstitutor substitutor = new StrSubstitutor(values);
-        return substitutor.replace(path);
-    }
-
-    protected String addAttrAndValueToPath(String path, String attrName, String value) {
-        String newPath = validatePathWithAttributes(path);
-        return newPath + attrName + EQUAL + value;
-    }
-
 }
