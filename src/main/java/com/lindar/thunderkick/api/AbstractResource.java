@@ -17,10 +17,6 @@ import java.util.Collections;
 public abstract class AbstractResource {
     private static final String ISO_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSSZZ";
 
-    private static final String QUESTION = "?";
-    private static final String AND = "&";
-    private static final String EQUAL = "=";
-
     @Getter
     private final AccessCredentials accessCredentials;
 

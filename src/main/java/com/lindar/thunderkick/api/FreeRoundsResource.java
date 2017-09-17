@@ -1,6 +1,5 @@
 package com.lindar.thunderkick.api;
 
-import com.lindar.thunderkick.util.Endpoints;
 import com.lindar.thunderkick.vo.api.FreeRoundsTemplateFailedPlayerAssignments;
 import com.lindar.thunderkick.vo.api.FreeRoundsTemplateMultiPlayerAssignment;
 import com.lindar.thunderkick.vo.api.FreeRoundsTemplatePlayerAssignment;
@@ -25,49 +24,49 @@ public class FreeRoundsResource extends AbstractResource {
     }
 
     public Result<FreeRoundsTemplateFailedPlayerAssignments> assignMultiple(FreeRoundsTemplateMultiPlayerAssignment templatePlayerAssignment, String templateRef) {
-        String path = Endpoints.FREE_ROUNDS.ASSIGNMENT_MULTIPLE;
+        String path = this.freeRoundsTemplateResource.templatePath() + Endpoints.FREE_ROUNDS.ASSIGN;
         return postAndGet(UrlAcolyte.safeConcat(path, templateRef), templatePlayerAssignment, FreeRoundsTemplateFailedPlayerAssignments.class);
     }
 
     public Result<FreeRoundsTemplatePlayerAssignments> getPlayerAssignmentsByUsername(String username, boolean onlyActive) {
-        String path = Endpoints.FREE_ROUNDS.ASSIGNMENT_BY_USERNAME;
-        return sendAndGet(UrlAcolyte.addParam(UrlAcolyte.safeConcat(path, username), ONLY_ACTIVE_PARAM, BooleanUtils.toStringTrueFalse(onlyActive)),
+        return sendAndGet(UrlAcolyte.addParam(UrlAcolyte.safeConcat(accountPath(), username), ONLY_ACTIVE_PARAM, BooleanUtils.toStringTrueFalse(onlyActive)),
                 FreeRoundsTemplatePlayerAssignments.class);
     }
 
     public Result<FreeRoundsTemplatePlayerAssignments> getPlayerAssignmentsByPlayerRef(String playerRef, boolean onlyActive) {
-        String path = Endpoints.FREE_ROUNDS.ASSIGNMENT_BY_REF;
-        return sendAndGet(UrlAcolyte.addParam(UrlAcolyte.safeConcat(path, playerRef), ONLY_ACTIVE_PARAM, BooleanUtils.toStringTrueFalse(onlyActive)),
+        return sendAndGet(UrlAcolyte.addParam(UrlAcolyte.safeConcat(accountByExternalRefPath(), playerRef), ONLY_ACTIVE_PARAM, BooleanUtils.toStringTrueFalse(onlyActive)),
                 FreeRoundsTemplatePlayerAssignments.class);
     }
 
     public Result<Void> assignByPlayerUsername(String username, String playerFreeRoundsRef, FreeRoundsTemplatePlayerAssignment templatePlayerAssignment) {
-        String path = Endpoints.FREE_ROUNDS.ASSIGNMENT_BY_USERNAME_AND_ROUNDS_REF;
-        return post(UrlAcolyte.safeConcat(path, username, playerFreeRoundsRef), templatePlayerAssignment);
+        return post(UrlAcolyte.safeConcat(accountPath(), username, playerFreeRoundsRef), templatePlayerAssignment);
     }
 
     public Result<Void> assignByPlayerRef(String playerRef, String playerFreeRoundsRef, FreeRoundsTemplatePlayerAssignment templatePlayerAssignment) {
-        String path = Endpoints.FREE_ROUNDS.ASSIGNMENT_BY_REF_AND_ROUNDS_REF;
-        return post(buildPathWithUserAndPlayerFreeRoundsRef(path, playerRef, playerFreeRoundsRef), templatePlayerAssignment);
+        return post(UrlAcolyte.safeConcat(accountByExternalRefPath(), playerRef, playerFreeRoundsRef), templatePlayerAssignment);
     }
 
     public Result<FreeRoundsTemplatePlayerAssignment> getAssignmentByPlayerUsernameAndPlayerFreeRoundsRef(String username, String playerFreeRoundsRef) {
-        String path = Endpoints.FREE_ROUNDS.ASSIGNMENT_BY_USERNAME_AND_ROUNDS_REF;
-        return sendAndGet(buildPathWithUserAndPlayerFreeRoundsRef(path, username, playerFreeRoundsRef), FreeRoundsTemplatePlayerAssignment.class);
+        return sendAndGet(UrlAcolyte.safeConcat(accountPath(), username, playerFreeRoundsRef), FreeRoundsTemplatePlayerAssignment.class);
     }
 
     public Result<FreeRoundsTemplatePlayerAssignment> getAssignmentByPlayerRefAndPlayerFreeRoundsRef(String playerRef, String playerFreeRoundsRef) {
-        String path = Endpoints.FREE_ROUNDS.ASSIGNMENT_BY_REF_AND_ROUNDS_REF;
-        return sendAndGet(buildPathWithUserAndPlayerFreeRoundsRef(path, playerRef, playerFreeRoundsRef), FreeRoundsTemplatePlayerAssignment.class);
+        return sendAndGet(UrlAcolyte.safeConcat(accountByExternalRefPath(), playerRef, playerFreeRoundsRef), FreeRoundsTemplatePlayerAssignment.class);
     }
 
     public Result<Void> invalidateAssignmentByPlayerUsernameAndPlayerFreeRoundsRef(String username, String playerFreeRoundsRef) {
-        String path = Endpoints.FREE_ROUNDS.ASSIGNMENT_BY_USERNAME_AND_ROUNDS_REF;
-        return delete(buildPathWithUserAndPlayerFreeRoundsRef(path, username, playerFreeRoundsRef));
+        return delete(UrlAcolyte.safeConcat(accountPath(), username, playerFreeRoundsRef));
     }
 
     public Result<Void> invalidateAssignmentByPlayerRefAndPlayerFreeRoundsRef(String playerRef, String playerFreeRoundsRef) {
-        String path = Endpoints.FREE_ROUNDS.ASSIGNMENT_BY_REF_AND_ROUNDS_REF;
-        return delete(buildPathWithUserAndPlayerFreeRoundsRef(path, playerRef, playerFreeRoundsRef));
+        return delete(UrlAcolyte.safeConcat(accountByExternalRefPath(), playerRef, playerFreeRoundsRef));
+    }
+
+    private String accountPath() {
+        return UrlAcolyte.addPathParams(Endpoints.FREE_ROUNDS.ACCOUNT, super.getAccessCredentials().getOperatorId());
+    }
+
+    private String accountByExternalRefPath() {
+        return UrlAcolyte.addPathParams(Endpoints.FREE_ROUNDS.ACCOUNT_BY_EXTERNAL_REF, super.getAccessCredentials().getOperatorId());
     }
 }
