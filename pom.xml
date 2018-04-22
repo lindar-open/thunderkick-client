@@ -4,7 +4,7 @@
 
     <groupId>com.lindar</groupId>
     <artifactId>thunderkick-client</artifactId>
-    <version>1.0.10-SNAPSHOT</version>
+    <version>1.0.7-SNAPSHOT</version>
     
     <name>Thunderkick Java Client</name>
     
