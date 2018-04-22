@@ -6,7 +6,6 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class PlayerSessionTokenWrapper extends ErrorResponse {
-
     private String playerSessionToken;
 
     public PlayerSessionTokenWrapper(String playerSessionToken) {

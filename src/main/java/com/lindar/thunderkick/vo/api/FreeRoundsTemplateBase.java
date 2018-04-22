@@ -7,7 +7,5 @@ import java.util.List;
 
 @Data
 public class FreeRoundsTemplateBase extends ErrorResponse {
-
     private List<GameGroup> gameGroups;
-
 }

@@ -7,7 +7,5 @@ import java.util.List;
 
 @Data
 public class FreeRoundsTemplateFailedPlayerAssignments extends ErrorResponse {
-
     private List<PlayerAssignment> failedPlayerAssignments;
-
 }

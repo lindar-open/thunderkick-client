@@ -37,5 +37,5 @@ public class FreeRoundsTemplateResource extends AbstractResource {
     String templatePath() {
         return UrlAcolyte.addPathParams(Endpoints.FREE_ROUNDS.TEMPLATE, super.getAccessCredentials().getOperatorId());
     }
-    
+
 }

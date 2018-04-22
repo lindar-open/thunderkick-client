@@ -1,16 +1,17 @@
 package com.lindar.thunderkick.vo.api;
 
+import com.google.gson.annotations.JsonAdapter;
+import com.lindar.thunderkick.util.adapters.NonIsoInstantTypeAdapter;
 import lombok.Data;
 
-import java.util.Date;
+import java.time.Instant;
 
 @Data
 public class FreeRoundsTemplateSearchQuery extends ErrorResponse {
+    private String  gameName;
 
-    private String gameName;
-
-    private Date creationDateFrom;
+    @JsonAdapter(NonIsoInstantTypeAdapter.class)
+    private Instant creationDateFrom;
 
     private Boolean onlyValid;
-
 }

@@ -30,12 +30,12 @@ public class FreeRoundsResource extends AbstractResource {
 
     public Result<FreeRoundsTemplatePlayerAssignments> getPlayerAssignmentsByUsername(String username, boolean onlyActive) {
         return sendAndGet(UrlAcolyte.addParam(UrlAcolyte.safeConcat(accountPath(), username), ONLY_ACTIVE_PARAM, BooleanUtils.toStringTrueFalse(onlyActive)),
-                FreeRoundsTemplatePlayerAssignments.class);
+                          FreeRoundsTemplatePlayerAssignments.class);
     }
 
     public Result<FreeRoundsTemplatePlayerAssignments> getPlayerAssignmentsByPlayerRef(String playerRef, boolean onlyActive) {
         return sendAndGet(UrlAcolyte.addParam(UrlAcolyte.safeConcat(accountByExternalRefPath(), playerRef), ONLY_ACTIVE_PARAM, BooleanUtils.toStringTrueFalse(onlyActive)),
-                FreeRoundsTemplatePlayerAssignments.class);
+                          FreeRoundsTemplatePlayerAssignments.class);
     }
 
     public Result<Void> assignByPlayerUsername(String username, String playerFreeRoundsRef, FreeRoundsTemplatePlayerAssignment templatePlayerAssignment) {

@@ -6,10 +6,6 @@ import com.lindar.thunderkick.api.FreeRoundsTemplateResource;
 import com.lindar.thunderkick.vo.internal.AccessCredentials;
 import lombok.extern.slf4j.Slf4j;
 
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.util.Date;
-
 /**
  * Thunderkick Casino API Client Facade
  */
@@ -18,8 +14,8 @@ public class Thunderkick {
 
     private static final String INVALID_ACCOUNT_MSG = "No account could be found using the provided credentials. Please check and try again";
 
-    private AccountResource accountResource;
-    private FreeRoundsResource freeRoundsResource;
+    private AccountResource            accountResource;
+    private FreeRoundsResource         freeRoundsResource;
     private FreeRoundsTemplateResource freeRoundsTemplateResource;
 
     private Thunderkick(AccessCredentials accessCredentials) {
@@ -67,9 +63,4 @@ public class Thunderkick {
     public FreeRoundsResource freeRounds() {
         return freeRoundsResource;
     }
-
-    private static Date fromLocalDate(LocalDateTime localDateTime) {
-        return Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
-    }
-
 }

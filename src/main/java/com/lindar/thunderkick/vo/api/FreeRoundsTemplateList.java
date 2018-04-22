@@ -6,6 +6,5 @@ import java.util.List;
 
 @Data
 public class FreeRoundsTemplateList extends ErrorResponse {
-
     private List<FreeRoundsTemplate> bonusTemplates;
 }
