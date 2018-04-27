@@ -19,5 +19,4 @@ public class FreeRoundsTemplate extends FreeRoundsTemplateBase {
     private Integer id;
     private String  templateReference;
     private Integer operatorId;
-    private Boolean usedForReferAFriend;
 }
