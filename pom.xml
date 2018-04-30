@@ -51,13 +51,13 @@
         <dependency>
             <groupId>com.lindar</groupId>
             <artifactId>acolyte</artifactId>
-            <version>1.3.7</version>
+            <version>1.3.8</version>
         </dependency>
 
         <dependency>
             <groupId>com.lindar</groupId>
             <artifactId>well-rested-client</artifactId>
-            <version>1.5.1</version>
+            <version>1.5.2</version>
         </dependency>
         
     </dependencies>
