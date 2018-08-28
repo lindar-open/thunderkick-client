@@ -13,7 +13,7 @@ import java.time.Instant;
 import java.util.Date;
 
 public class NonIsoInstantTypeAdapter extends TypeAdapter<Instant> {
-    private static final String DEF_DATE_FORMAT = "yyyy-MM-dd'T'hh:mm:ss.SSSZ";
+    private static final String DEF_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSSZ";
 
     @Override public void write(JsonWriter out, Instant value) throws IOException {
         SimpleDateFormat formatter = new SimpleDateFormat(DEF_DATE_FORMAT);

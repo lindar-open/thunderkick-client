@@ -12,7 +12,7 @@ import java.text.SimpleDateFormat;
 import java.time.Instant;
 
 public class NonIsoInstantSerializer implements JsonDeserializer<Instant> {
-    private static final String DEF_DATE_FORMAT = "yyyy-MM-dd'T'hh:mm:ss.SSSZ";
+    private static final String DEF_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSSZ";
 
     @Override
     public Instant deserialize(JsonElement element, Type arg1, JsonDeserializationContext arg2) throws JsonParseException {
