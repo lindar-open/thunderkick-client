@@ -10,5 +10,5 @@ public class FreeRoundsTemplateBase extends ErrorResponse {
     private List<GameGroup> gameGroups;
     private Boolean         usedForReferAFriend;
     private Boolean         usedForWelcomeOffer;
-    private Boolean usedForMobileVerification;
+    private Boolean         usedForMobileVerification;
 }
