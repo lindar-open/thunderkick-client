@@ -70,6 +70,7 @@ public abstract class AbstractResource {
     <U, T extends ErrorResponse> Result<T> postAndGet(String resourcePath, U objectToPost, Class<T> responseClass) {
         WellRestedRequest request = buildRequestFromResourcePath(resourcePath);
         WellRestedResponse response = request.post().jsonContent(objectToPost).submit();
+        log.debug("postAndGet: {} | request object: {} | response: {}", resourcePath, objectToPost, response);
         if (response.isValid()) {
             return ResultBuilder.successful(response.fromJson().castTo(responseClass));
         }
