@@ -7,6 +7,7 @@ import com.lindar.wellrested.WellRestedRequest;
 import com.lindar.wellrested.vo.Result;
 import com.lindar.wellrested.vo.ResultBuilder;
 import com.lindar.wellrested.vo.WellRestedResponse;
+import lindar.acolyte.util.MapsAcolyte;
 import lindar.acolyte.util.UrlAcolyte;
 import lombok.RequiredArgsConstructor;
 
@@ -26,9 +27,16 @@ public class GameResource {
 
         }
         GameListWrapper wrapperResult = response.fromJson().castTo(GameListWrapper.class);
-        if (wrapperResult == null) {
+        if (wrapperResult == null || MapsAcolyte.isEmpty(wrapperResult.getGames())) {
             return ResultBuilder.failed("Failed to cast to GameListWrapper");
         }
-        return ResultBuilder.successful(wrapperResult.getGames().keySet().stream().map(gameId -> new Game(gameId, wrapperResult.getGames().get(gameId))).collect(Collectors.toList()));
+        List<Game> games = wrapperResult.getGames().keySet().stream()
+                                        .map(gameId -> {
+                                            Game game = new Game();
+                                            game.setId(gameId);
+                                            game.setName(wrapperResult.getGames().get(gameId));
+                                            return game;
+                                        }).collect(Collectors.toList());
+        return ResultBuilder.successful(games);
     }
 }
