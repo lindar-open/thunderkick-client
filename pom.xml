@@ -4,7 +4,7 @@
 
     <groupId>com.lindar</groupId>
     <artifactId>thunderkick-client</artifactId>
-    <version>1.0.16</version>
+    <version>1.0.17-SNAPSHOT</version>
 
     <name>Thunderkick Java Client</name>
 
@@ -38,7 +38,7 @@
         <connection>scm:git:git@github.com:lindar-open/thunderkick-client.git</connection>
         <developerConnection>scm:git:git@github.com:lindar-open/thunderkick-client.git</developerConnection>
         <url>https://github.com/lindar-open/thunderkick-client.git</url>
-        <tag>1.0.16</tag>
+        <tag>HEAD</tag>
     </scm>
 
     <distributionManagement>
