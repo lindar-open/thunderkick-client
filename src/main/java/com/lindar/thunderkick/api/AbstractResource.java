@@ -3,6 +3,7 @@ package com.lindar.thunderkick.api;
 import com.lindar.thunderkick.vo.api.ErrorResponse;
 import com.lindar.thunderkick.vo.internal.AccessCredentials;
 import com.lindar.wellrested.WellRestedRequest;
+import com.lindar.wellrested.json.GsonJsonMapper;
 import com.lindar.wellrested.util.StringDateSerializer;
 import com.lindar.wellrested.vo.Result;
 import com.lindar.wellrested.vo.ResultBuilder;
@@ -27,9 +28,10 @@ public abstract class AbstractResource {
     private WellRestedRequest buildRequestFromResourcePath(String resourcePath) {
         String url = UrlAcolyte.safeConcat(accessCredentials.getApiUrl(), resourcePath);
         return WellRestedRequest.builder().url(url).credentials(accessCredentials.getUsername(), accessCredentials.getPassword())
-                .dateSerializer(new StringDateSerializer(ISO_DATE_FORMAT))
-                .excludeFields(Collections.singletonList("ref"))
-                .build();
+                                .jsonMapper(new GsonJsonMapper.Builder()
+                                                    .dateSerializer(new StringDateSerializer(ISO_DATE_FORMAT))
+                                                    .excludeFields(Collections.singletonList("ref")).build())
+                                .build();
     }
 
     <T extends ErrorResponse> Result<T> sendAndGet(String resourcePath, Class<T> clazz) {
@@ -62,7 +64,7 @@ public abstract class AbstractResource {
             ErrorResponse errorResponse = response.fromJson().castTo(ErrorResponse.class);
             return ResultBuilder.failed().msg(errorResponse.getErrorMessage()).code(errorResponse.getErrorCode()).buildAndIgnoreData();
         } catch (Exception ex) {
-            log.error("Error occurred: ", ex);
+            log.error("Error occurred for resource path: {} and objectToPost: {}: ", resourcePath, objectToPost, ex);
             return ResultBuilder.failed("Error occurred: " + ex.getMessage());
         }
     }
@@ -98,7 +100,7 @@ public abstract class AbstractResource {
             ErrorResponse errorResponse = response.fromJson().castTo(ErrorResponse.class);
             return ResultBuilder.failed().msg(errorResponse.getErrorMessage()).code(errorResponse.getErrorCode()).buildAndIgnoreData();
         } catch (Exception ex) {
-            log.error("Error occurred: ", ex);
+            log.error("Error occurred for resource path: {} and objectToPut: {}: ", resourcePath, objectToPut, ex);
             return ResultBuilder.failed("Error occurred: " + ex.getMessage());
         }
     }
@@ -125,7 +127,7 @@ public abstract class AbstractResource {
             ErrorResponse errorResponse = response.fromJson().castTo(ErrorResponse.class);
             return ResultBuilder.failed().msg(errorResponse.getErrorMessage()).code(errorResponse.getErrorCode()).buildAndIgnoreData();
         } catch (Exception ex) {
-            log.error("Error occurred: ", ex);
+            log.error("Error occurred for resource path: {}", resourcePath, ex);
             return ResultBuilder.failed("Error occurred: " + ex.getMessage());
         }
     }
