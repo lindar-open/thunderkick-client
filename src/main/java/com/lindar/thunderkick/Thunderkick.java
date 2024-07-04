@@ -3,6 +3,7 @@ package com.lindar.thunderkick;
 import com.lindar.thunderkick.api.AccountResource;
 import com.lindar.thunderkick.api.FreeRoundsResource;
 import com.lindar.thunderkick.api.FreeRoundsTemplateResource;
+import com.lindar.thunderkick.api.GameResource;
 import com.lindar.thunderkick.vo.internal.AccessCredentials;
 import lombok.extern.slf4j.Slf4j;
 
@@ -11,26 +12,27 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Slf4j
 public class Thunderkick {
-
-    private static final String INVALID_ACCOUNT_MSG = "No account could be found using the provided credentials. Please check and try again";
-
     private AccountResource            accountResource;
     private FreeRoundsResource         freeRoundsResource;
     private FreeRoundsTemplateResource freeRoundsTemplateResource;
+    private GameResource               gameResource;
 
     private Thunderkick(AccessCredentials accessCredentials) {
         this.accountResource = new AccountResource(accessCredentials);
         this.freeRoundsResource = new FreeRoundsResource(accessCredentials);
         this.freeRoundsTemplateResource = new FreeRoundsTemplateResource(accessCredentials);
+        this.gameResource = new GameResource(accessCredentials.getGameServiceApiUrl(), accessCredentials.getOperatorName());
     }
 
     /**
      * Builds Thunderkick Casino API Client
      */
-    public static Thunderkick build(String apiUrl, String operatorId, String username, String password) {
+    public static Thunderkick build(String apiUrl, String gameServiceApiUrl, String operatorId, String operatorName, String username, String password) {
         AccessCredentials accessCredentials = new AccessCredentials();
         accessCredentials.setApiUrl(apiUrl);
+        accessCredentials.setGameServiceApiUrl(gameServiceApiUrl);
         accessCredentials.setOperatorId(operatorId);
+        accessCredentials.setOperatorName(operatorName);
         accessCredentials.setUsername(username);
         accessCredentials.setPassword(password);
         return new Thunderkick(accessCredentials);
@@ -62,5 +64,9 @@ public class Thunderkick {
      */
     public FreeRoundsResource freeRounds() {
         return freeRoundsResource;
+    }
+
+    public GameResource games() {
+        return gameResource;
     }
 }

@@ -4,69 +4,43 @@
 
     <groupId>com.lindar</groupId>
     <artifactId>thunderkick-client</artifactId>
-    <version>1.0.13-BET-LIMIT-SNAPSHOT</version>
+    <version>1.1.2-BET-LIMIT-SNAPSHOT</version>
     
     <name>Thunderkick Java Client</name>
-    
+
     <description>Thunderkick casino java client</description>
 
     <url>http://www.lindar.com/</url>
-    
+
     <licenses>
         <license>
             <name>Apache License 2.0</name>
             <url>https://www.apache.org/licenses/LICENSE-2.0</url>
         </license>
     </licenses>
-    
-    <developers>
-        <developer>
-            <name>Iulian Dafinoiu</name>
-            <url>iulian@lindar.com</url>
-            <organization>Lindar</organization>
-            <organizationUrl>http://www.lindar.com/</organizationUrl>
-        </developer>
-    </developers>
-    
+
+
     <scm>
         <connection>scm:git:git@github.com:lindar-open/thunderkick-client.git</connection>
         <developerConnection>scm:git:git@github.com:lindar-open/thunderkick-client.git</developerConnection>
         <url>https://github.com/lindar-open/thunderkick-client.git</url>
-      <tag>HEAD</tag>
-  </scm>
-    
-    <distributionManagement>
-        <snapshotRepository>
-            <id>ossrh</id>
-            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
-        </snapshotRepository>
-        <repository>
-            <id>ossrh</id>
-            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
-        </repository>
-    </distributionManagement>
+        <tag>HEAD</tag>
+    </scm>
 
     <dependencies>
 
         <dependency>
             <groupId>com.lindar</groupId>
             <artifactId>acolyte</artifactId>
-            <version>1.3.16</version>
+            <version>1.6.0</version>
         </dependency>
 
         <dependency>
             <groupId>com.lindar</groupId>
             <artifactId>well-rested-client</artifactId>
-            <version>1.5.6</version>
+            <version>2.3.2</version>
         </dependency>
 
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <version>1.18.34</version>
-            <scope>provided</scope>
-        </dependency>
-        
     </dependencies>
 
     <build>
@@ -74,7 +48,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.8.0</version>
+                <version>3.8.1</version>
                 <configuration>
                     <source>1.8</source>
                     <target>1.8</target>
@@ -83,7 +57,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
-                <version>3.0.1</version>
+                <version>3.2.1</version>
                 <executions>
                     <execution>
                         <id>attach-sources</id>
@@ -96,7 +70,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
-                <version>3.0.1</version>
+                <version>3.1.1</version>
                 <executions>
                     <execution>
                         <id>attach-javadocs</id>
@@ -112,12 +86,17 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-release-plugin</artifactId>
-                <version>2.5.3</version>
+                <version>3.0.0-M1</version>
                 <configuration>
                     <tagNameFormat>@{project.version}</tagNameFormat>
                     <autoVersionSubmodules>true</autoVersionSubmodules>
                     <releaseProfiles>releases</releaseProfiles>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-deploy-plugin</artifactId>
+                <version>3.0.0-M1</version>
             </plugin>
         </plugins>
     </build>
@@ -130,7 +109,7 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-gpg-plugin</artifactId>
-                        <version>1.6</version>
+                        <version>3.0.1</version>
                         <executions>
                             <execution>
                                 <id>sign-artifacts</id>
