@@ -19,6 +19,20 @@
         </license>
     </licenses>
 
+    <developers>
+        <developer>
+            <name>Iulian Dafinoiu</name>
+            <url>iulian@lindar.com</url>
+            <organization>Lindar</organization>
+            <organizationUrl>https://www.lindar.com/</organizationUrl>
+        </developer>
+        <developer>
+            <name>David Sharp</name>
+            <url>david@lindar.com</url>
+            <organization>Lindar</organization>
+            <organizationUrl>https://www.lindar.com/</organizationUrl>
+        </developer>
+    </developers>
 
     <scm>
         <connection>scm:git:git@github.com:lindar-open/thunderkick-client.git</connection>
