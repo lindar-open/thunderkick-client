@@ -4,7 +4,7 @@
 
     <groupId>com.lindar</groupId>
     <artifactId>thunderkick-client</artifactId>
-    <version>1.1.2-BET-LIMIT-SNAPSHOT</version>
+    <version>1.1.2</version>
     
     <name>Thunderkick Java Client</name>
 
