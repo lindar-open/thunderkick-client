@@ -7,6 +7,7 @@ interface Endpoints {
 
         String REGISTER   = "/register";
         String LOGIN      = "/session/login";
+        String REGISTER_AND_LOGIN = "/registerAndLogin";
         String KEEP_ALIVE = "/session/keepalive";
         String LOGOUT     = "/session/logout";
     }
