@@ -3,6 +3,8 @@ package com.lindar.thunderkick.api;
 import com.lindar.thunderkick.vo.api.LoginUserAccount;
 import com.lindar.thunderkick.vo.api.PlayerIdWrapper;
 import com.lindar.thunderkick.vo.api.PlayerSessionTokenWrapper;
+import com.lindar.thunderkick.vo.api.RegisterAndLoginRequest;
+import com.lindar.thunderkick.vo.api.RegisterAndLoginResponse;
 import com.lindar.thunderkick.vo.api.RegisterUserAccount;
 import com.lindar.thunderkick.vo.internal.AccessCredentials;
 import com.lindar.wellrested.vo.Result;
@@ -20,6 +22,10 @@ public class AccountResource extends AbstractResource {
     
     public Result<PlayerSessionTokenWrapper> login(LoginUserAccount loginUserAccount) {
         return postAndGet(accountPath() + Endpoints.ACCOUNT.LOGIN, loginUserAccount, PlayerSessionTokenWrapper.class);
+    }
+
+    public Result<RegisterAndLoginResponse> registerAndLogin(RegisterAndLoginRequest request) {
+        return postAndGet(accountPath() + Endpoints.ACCOUNT.REGISTER_AND_LOGIN, request, RegisterAndLoginResponse.class);
     }
 
     public Result<Void> keepAlive(String playerSessionToken) {
