@@ -1,11 +1,6 @@
 package com.lindar.thunderkick.api;
 
-import com.lindar.thunderkick.vo.api.LoginUserAccount;
-import com.lindar.thunderkick.vo.api.PlayerIdWrapper;
-import com.lindar.thunderkick.vo.api.PlayerSessionTokenWrapper;
-import com.lindar.thunderkick.vo.api.RegisterAndLoginRequest;
-import com.lindar.thunderkick.vo.api.RegisterAndLoginResponse;
-import com.lindar.thunderkick.vo.api.RegisterUserAccount;
+import com.lindar.thunderkick.vo.api.*;
 import com.lindar.thunderkick.vo.internal.AccessCredentials;
 import com.lindar.wellrested.vo.Result;
 import lindar.acolyte.util.UrlAcolyte;
@@ -36,6 +31,10 @@ public class AccountResource extends AbstractResource {
     public Result<Void> logout(String playerSessionToken) {
         String path = accountPath() + Endpoints.ACCOUNT.LOGOUT;
         return delete(UrlAcolyte.safeConcat(path, playerSessionToken));
+    }
+
+    public Result<Void> update(String username, UpdateUserProfileRequest request) {
+        return put(UrlAcolyte.safeConcat(accountPath(), Endpoints.ACCOUNT.UPDATE, username), request);
     }
 
     private String accountPath() {
